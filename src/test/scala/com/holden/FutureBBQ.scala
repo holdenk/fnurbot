@@ -13,35 +13,6 @@ import org.specs.SpecsMatchers
 import org.specs.matcher.ScalaCheckMatchers
 
 
-case class NamedThreadFactory(name: String) extends ThreadFactory {
-  val threadNumber = new atomic.AtomicInteger(1)
-  val namePrefix = "pool-" + name + "-thread-"
-
-  def newThread(r:Runnable):Thread =  {
-    val t = new Thread(r, namePrefix + threadNumber.getAndIncrement())
-    t.setDaemon(true)
-    t
-  }
-}
-
-object FutureNinja {
-    val executor0 = Executors.newCachedThreadPool()
-    val executor = {
-      val coreSize = 32
-      val maxSize = 128
-      val name = "ConcreteFutureService"
-
-      val queue = new LinkedBlockingQueue[Runnable]()
-        queue.size().toDouble
-
-      new ThreadPoolExecutor(
-        coreSize, maxSize,
-        0L, TimeUnit.MILLISECONDS,
-        queue,
-        NamedThreadFactory(name));
-    }
-    val esfp = FuturePool(executor)
-}
 class FutureBBQTest extends SpecsMatchers with ScalaCheckMatchers {
   @Test
   def zeFutures {
