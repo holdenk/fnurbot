@@ -16,7 +16,9 @@ import org.specs.matcher.ScalaCheckMatchers
 class FutureBBQTest extends SpecsMatchers with ScalaCheckMatchers {
   @Test
   def zeFutures {
-    val future : Future[Int]= FutureNinja.esfp({
+    val executor = Executors.newCachedThreadPool()
+    val esfp = FuturePool(executor)
+    val future : Future[Int]= esfp({
       println("bots")
       Thread.sleep(100)
       println("have feelings")
